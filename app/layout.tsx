@@ -4,8 +4,14 @@ import React from "react";
 import "./globals.css";
 
 const inter = localFont({
-  src: "./fonts/Inter-VF.ttf",
+  src: "./fonts/InterVF.ttf",
   variable: "--font-inter",
+  weight: "100 200 300 400 500 700 800 900 ",
+});
+
+const spaceGrotesk = localFont({
+  src: "./fonts/SpaceGroteskVF.ttf",
+  variable: "--font-space-grotesk",
   weight: "100 200 300 400 500 700 800 900 ",
 });
 
