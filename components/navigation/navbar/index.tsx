@@ -11,10 +11,12 @@ const Navbar = () => {
           height={23}
           alt="Devflow Logo"
         />
-        <p className="h2-bold font-space-grotesk">
-          Dev <span>Flow</span>
+        <p className="h2-bold font-space-grotesk text-dark-100 dark:text-violet-700 max-sm:hidden">
+          Dev <span className="text-primary-500">Flow</span>
         </p>
       </Link>
+      <p>Global Search</p>
+      <div className="flex-between gap-5">Theme</div>
     </nav>
   );
 };
