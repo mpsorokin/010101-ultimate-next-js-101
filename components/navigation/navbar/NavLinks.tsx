@@ -1,0 +1,32 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import { sidebarLinks } from "@/constants";
+
+const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
+  const pathName = usePathname();
+
+  return (
+    <>
+      {sidebarLinks.map((link) => {
+        const isActive =
+          (pathName.includes(link.route) && link.route.length > 1) ||
+          pathName === link.route;
+
+        const LinkComponent = (
+          <Link href={link.route} key={link.label}>
+            <Image src={link.imgURL} alt={link.label} width={20} height={20} />
+            <p>{link.label}</p>
+          </Link>
+        );
+
+        return LinkComponent;
+      })}
+    </>
+  );
+};
+
+export default NavLinks;
