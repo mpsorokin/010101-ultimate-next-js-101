@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Fragment } from "react";
 
+import { SheetClose } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
 
@@ -55,7 +57,13 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
           </Link>
         );
 
-        return LinkComponent;
+        return isMobileNav ? (
+          <SheetClose asChild key={link.route}>
+            {LinkComponent}
+          </SheetClose>
+        ) : (
+          <Fragment key={link.route}>{LinkComponent}</Fragment>
+        );
       })}
     </>
   );
