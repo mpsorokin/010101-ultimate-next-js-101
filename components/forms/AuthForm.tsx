@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import {
   DefaultValues,
   FieldValues,
@@ -21,6 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import ROUTES from "@/constants/routes";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -94,6 +96,28 @@ const AuthForm = <T extends FieldValues>({
               : "Signin up..."
             : buttonText}
         </Button>
+
+        {formType === "SIGN_IN" ? (
+          <p>
+            Don&#39;t have an acocunt?{" "}
+            <Link
+              href={ROUTES.SIGN_UP}
+              className="paragraph-semibold primary-text-gradient"
+            >
+              Sign Up
+            </Link>
+          </p>
+        ) : (
+          <p>
+            Already have an acocunt?{" "}
+            <Link
+              href={ROUTES.SIGN_IN}
+              className="paragraph-semibold primary-text-gradient"
+            >
+              Sign In
+            </Link>
+          </p>
+        )}
       </form>
     </Form>
   );
