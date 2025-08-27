@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { sidebarLinks } from "@/constants";
+import { cn } from "@/lib/utils";
 
 const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
   const pathName = usePathname();
@@ -17,7 +18,16 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
           pathName === link.route;
 
         const LinkComponent = (
-          <Link href={link.route} key={link.label}>
+          <Link
+            href={link.route}
+            key={link.label}
+            className={cn(
+              isActive
+                ? "primary-gradient rounded-lg text-light-900"
+                : "text-dark300_light900",
+              "flex items-center justify-start gap-4 bg-transparent p-4",
+            )}
+          >
             <Image src={link.imgURL} alt={link.label} width={20} height={20} />
             <p>{link.label}</p>
           </Link>
