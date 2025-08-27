@@ -66,7 +66,12 @@ const AuthForm = <T extends FieldValues>({
                     {field.name === "email" ? "Email Address" : field.name}
                   </FormLabel>
                   <FormControl>
-                    <Input required placeholder="shadcn" {...field} />
+                    <Input
+                      required
+                      type={field.name === "password" ? "password" : "text"}
+                      {...field}
+                      className="paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 no-focus min-h-12 rounded-1.5 border"
+                    />
                   </FormControl>
                   <FormDescription>
                     This is your public display name.
