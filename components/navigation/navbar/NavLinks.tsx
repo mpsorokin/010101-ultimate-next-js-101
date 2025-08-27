@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
   const pathName = usePathname();
+  const userId = 1;
 
   return (
     <>
@@ -16,6 +17,14 @@ const NavLinks = ({ isMobileNav = false }: { isMobileNav?: boolean }) => {
         const isActive =
           (pathName.includes(link.route) && link.route.length > 1) ||
           pathName === link.route;
+
+        if (link.route === "/profile") {
+          if (userId) {
+            link.route = `${link.route}/${userId}`;
+          } else {
+            return null;
+          }
+        }
 
         const LinkComponent = (
           <Link
