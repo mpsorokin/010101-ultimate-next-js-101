@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { ModeToggle } from "@/components/navigation/navbar/ThemeToggler";
+import MobileNavigation from "@/components/navigation/navbar/MobileNavigation";
+import ThemeToggler from "@/components/navigation/navbar/ThemeToggler";
 
 const Navbar = () => {
   return (
@@ -19,7 +20,8 @@ const Navbar = () => {
       </Link>
       <p>Global Search</p>
       <div className="flex-between gap-5">
-        <ModeToggle />
+        <ThemeToggler />
+        <MobileNavigation />
       </div>
     </nav>
   );
