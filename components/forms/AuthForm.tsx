@@ -88,7 +88,11 @@ const AuthForm = <T extends FieldValues>({
           className="primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter !text-light-900"
           type="submit"
         >
-          Submit
+          {form.formState.isSubmitting
+            ? buttonText === "Sign in"
+              ? "Signin in ..."
+              : "Signin up..."
+            : buttonText}
         </Button>
       </form>
     </Form>
