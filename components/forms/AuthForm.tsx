@@ -1,8 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import {
+  DefaultValues,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+  Path,
+} from "react-hook-form";
+import { z, ZodType } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -22,41 +28,56 @@ const formSchema = z.object({
   }),
 });
 
-const AuthForm = () => {
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-    },
+interface AuthFormProps<T extends FieldValues> {
+  schema: ZodType<T>;
+  defaultValues: T;
+  onSubmit: (data: T) => Promise<{ success: boolean }>;
+  formType: "SIGN_IN" | "SIGN_UP";
+}
+
+const AuthForm = <T extends FieldValues>({
+  schema,
+  defaultValues,
+  formType,
+  onSubmit,
+}: AuthFormProps<T>) => {
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+    defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const handleSubmit: SubmitHandler<T> = async () => {};
+
+  const buttonText = formType === "SIGN_IN" ? "Sign in" : "Sign up";
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+        {buttonText}
+        {Object.keys(defaultValues).map((field) => {
+          return (
+            <FormField
+              key={field}
+              control={form.control}
+              name={field as Path<T>}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="capitalize">
+                    {field.name === "email" ? "Email Address" : field.name}
+                  </FormLabel>
+                  <FormControl>
+                    <Input required placeholder="shadcn" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          );
+        })}
+
         <Button type="submit">Submit</Button>
       </form>
     </Form>
