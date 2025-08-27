@@ -52,7 +52,10 @@ const AuthForm = <T extends FieldValues>({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="mt-10 space-y-6"
+      >
         {buttonText}
         {Object.keys(defaultValues).map((field) => {
           return (
@@ -61,8 +64,8 @@ const AuthForm = <T extends FieldValues>({
               control={form.control}
               name={field as Path<T>}
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="capitalize">
+                <FormItem className="flex w-full flex-col gap-2.5">
+                  <FormLabel className="capitalize paragraph-medium text-dark400_light700">
                     {field.name === "email" ? "Email Address" : field.name}
                   </FormLabel>
                   <FormControl>
@@ -73,9 +76,6 @@ const AuthForm = <T extends FieldValues>({
                       className="paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 no-focus min-h-12 rounded-1.5 border"
                     />
                   </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -83,7 +83,13 @@ const AuthForm = <T extends FieldValues>({
           );
         })}
 
-        <Button type="submit">Submit</Button>
+        <Button
+          disabled={form.formState.isSubmitting}
+          className="primary-gradient paragraph-medium min-h-12 w-full rounded-2 px-4 py-3 font-inter !text-light-900"
+          type="submit"
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   );
