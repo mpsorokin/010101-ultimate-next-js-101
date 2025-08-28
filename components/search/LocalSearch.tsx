@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Input } from "@/components/ui/input";
+import { formUrlQuery } from "@/lib/url";
 
 interface ILocalSearchProps {
   route: string;
@@ -23,6 +24,16 @@ const LocalSearch = ({
   const query = searchParams.get("query") || "";
 
   const [searchQuery, setSearchQuery] = useState(query);
+
+  useEffect(() => {
+    if (searchQuery) {
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: "query",
+        value: searchQuery,
+      });
+    }
+  }, [searchQuery]);
 
   return (
     <div
