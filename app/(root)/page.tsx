@@ -5,6 +5,34 @@ import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 
 const Home = async () => {
+  const questions = [
+    {
+      _id: "1",
+      title: "How to learn React",
+      description: "I want to learn React, anyone can help me?",
+      tags: [
+        { _id: "1", name: "React" },
+        { _id: "2", name: "javascript" },
+      ],
+      author: { _id: "1", name: "John Doe" },
+      upvotes: 10,
+      answers: 5,
+      views: 150,
+      createdAt: new Date().toISOString(),
+    },
+    {
+      _id: "2",
+      title: "How to learn JavaScript",
+      description: "I want to learn Javascript, anyone can help me?",
+      tags: [{ _id: "2", name: "javascript" }],
+      author: { _id: "1", name: "John Doe" },
+      upvotes: 10,
+      answers: 5,
+      views: 150,
+      createdAt: new Date().toISOString(),
+    },
+  ];
+
   return (
     <div>
       <section className="w-full flex flex-col-reverse sm:flex-row justify-between gap-4 sm:items-center">
@@ -29,7 +57,9 @@ const Home = async () => {
       <div>Home filter</div>
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        <p>Question card 1</p>
+        {questions.map((question) => (
+          <h2 key={question._id}>{question.title}</h2>
+        ))}
       </div>
     </div>
   );
