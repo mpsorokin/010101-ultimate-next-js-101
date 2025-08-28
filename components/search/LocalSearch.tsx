@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Input } from "@/components/ui/input";
@@ -20,6 +20,7 @@ const LocalSearch = ({
   placeholder,
   otherClasses,
 }: ILocalSearchProps) => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
 
@@ -32,8 +33,10 @@ const LocalSearch = ({
         key: "query",
         value: searchQuery,
       });
+
+      router.push(newUrl, { scroll: false });
     }
-  }, [searchQuery]);
+  }, [searchQuery, router, route, searchParams]);
 
   return (
     <div
