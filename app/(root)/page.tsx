@@ -4,34 +4,44 @@ import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 
-const Home = async () => {
-  const questions = [
-    {
-      _id: "1",
-      title: "How to learn React",
-      description: "I want to learn React, anyone can help me?",
-      tags: [
-        { _id: "1", name: "React" },
-        { _id: "2", name: "javascript" },
-      ],
-      author: { _id: "1", name: "John Doe" },
-      upvotes: 10,
-      answers: 5,
-      views: 150,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      _id: "2",
-      title: "How to learn JavaScript",
-      description: "I want to learn Javascript, anyone can help me?",
-      tags: [{ _id: "2", name: "javascript" }],
-      author: { _id: "1", name: "John Doe" },
-      upvotes: 10,
-      answers: 5,
-      views: 150,
-      createdAt: new Date().toISOString(),
-    },
-  ];
+const questions = [
+  {
+    _id: "1",
+    title: "How to learn React",
+    description: "I want to learn React, anyone can help me?",
+    tags: [
+      { _id: "1", name: "React" },
+      { _id: "2", name: "javascript" },
+    ],
+    author: { _id: "1", name: "John Doe" },
+    upvotes: 10,
+    answers: 5,
+    views: 150,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    _id: "2",
+    title: "How to learn JavaScript",
+    description: "I want to learn Javascript, anyone can help me?",
+    tags: [{ _id: "2", name: "javascript" }],
+    author: { _id: "1", name: "John Doe" },
+    upvotes: 10,
+    answers: 5,
+    views: 150,
+    createdAt: new Date().toISOString(),
+  },
+];
+
+interface ISearchParams {
+  searchParams: Promise<{ [key: string]: string }>;
+}
+
+const Home = async ({ searchParams }: ISearchParams) => {
+  const { query } = await searchParams;
+
+  const filteredQuestions = questions.filter((question) =>
+    question.title.toLowerCase().includes(query.toLowerCase()),
+  );
 
   return (
     <div>
@@ -57,7 +67,7 @@ const Home = async () => {
       <div>Home filter</div>
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions.map((question) => (
+        {filteredQuestions.map((question) => (
           <h2 key={question._id}>{question.title}</h2>
         ))}
       </div>
