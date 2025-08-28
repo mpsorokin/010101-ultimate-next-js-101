@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 
@@ -17,7 +18,9 @@ const Home = async () => {
         </Button>
       </section>
 
-      <section className="mt-11">Local search</section>
+      <section className="mt-11">
+        <LocalSearch />
+      </section>
       <div>Home filter</div>
 
       <div className="mt-10 flex w-full flex-col gap-6">
