@@ -28,24 +28,28 @@ const LocalSearch = ({
   const [searchQuery, setSearchQuery] = useState(query);
 
   useEffect(() => {
-    if (searchQuery) {
-      const newUrl = formUrlQuery({
-        params: searchParams.toString(),
-        key: "query",
-        value: searchQuery,
-      });
-
-      router.push(newUrl, { scroll: false });
-    } else {
-      if (pathname === route) {
-        const newUrl = removeKeysFromQuery({
+    const delayDebouceFn = setTimeout(() => {
+      if (searchQuery) {
+        const newUrl = formUrlQuery({
           params: searchParams.toString(),
-          keysToRemove: [""],
+          key: "query",
+          value: searchQuery,
         });
 
         router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === route) {
+          const newUrl = removeKeysFromQuery({
+            params: searchParams.toString(),
+            keysToRemove: [""],
+          });
+
+          router.push(newUrl, { scroll: false });
+        }
       }
-    }
+    }, 700);
+
+    return () => clearTimeout(delayDebouceFn);
   }, [searchQuery, router, route, searchParams, pathname]);
 
   return (
