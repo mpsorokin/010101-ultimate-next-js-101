@@ -16,6 +16,13 @@ const Home = async () => {
           <Link href={ROUTES.ASK_QUESTION}>Ask a question</Link>
         </Button>
       </section>
+
+      <section className="mt-11">Local search</section>
+      <div>Home filter</div>
+
+      <div className="mt-10 flex w-full flex-col gap-6">
+        <p>Question card 1</p>
+      </div>
     </div>
   );
 };
