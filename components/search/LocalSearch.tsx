@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 import { Input } from "@/components/ui/input";
 
@@ -17,12 +19,17 @@ const LocalSearch = ({
   placeholder,
   otherClasses,
 }: ILocalSearchProps) => {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query") || "";
+
+  const [searchQuery, setSearchQuery] = useState(query);
+
   return (
     <div
       className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
     >
       <Image
-        src="/icons/search.svg"
+        src={imgSrc}
         alt="Search"
         width={24}
         height={24}
@@ -30,8 +37,9 @@ const LocalSearch = ({
       />
       <Input
         type="text"
-        placeholder="Search..."
-        value=""
+        placeholder={placeholder}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
         className="paragraph-regular no-focus placeholder text-dark400_light700 border-none shadow-none outline-none"
       />
     </div>
