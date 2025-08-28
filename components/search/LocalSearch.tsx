@@ -4,9 +4,23 @@ import Image from "next/image";
 
 import { Input } from "@/components/ui/input";
 
-const LocalSearch = () => {
+interface ILocalSearchProps {
+  route: string;
+  imgSrc: string;
+  placeholder: string;
+  otherClasses?: string;
+}
+
+const LocalSearch = ({
+  route,
+  imgSrc,
+  placeholder,
+  otherClasses,
+}: ILocalSearchProps) => {
   return (
-    <div className="background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4">
+    <div
+      className={`background-light800_darkgradient flex min-h-[56px] grow items-center gap-4 rounded-[10px] px-4 ${otherClasses}`}
+    >
       <Image
         src="/icons/search.svg"
         alt="Search"
