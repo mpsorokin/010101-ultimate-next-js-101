@@ -42,6 +42,8 @@ const LocalSearch = ({
           params: searchParams.toString(),
           keysToRemove: [""],
         });
+
+        router.push(newUrl, { scroll: false });
       }
     }
   }, [searchQuery, router, route, searchParams, pathname]);
