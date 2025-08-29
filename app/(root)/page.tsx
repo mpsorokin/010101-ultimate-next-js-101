@@ -15,7 +15,7 @@ const questions = [
       { _id: "1", name: "React" },
       { _id: "2", name: "javascript" },
     ],
-    author: { _id: "1", name: "John Doe" },
+    author: { _id: "1", name: "John Doe", image: "/images/img_avatar.png" },
     upvotes: 10,
     answers: 5,
     views: 150,
@@ -26,7 +26,7 @@ const questions = [
     title: "How to learn JavaScript",
     description: "I want to learn Javascript, anyone can help me?",
     tags: [{ _id: "2", name: "javascript" }],
-    author: { _id: "1", name: "John Doe" },
+    author: { _id: "1", name: "John Doe", image: "/images/img_avatar.png" },
     upvotes: 10,
     answers: 5,
     views: 150,
@@ -78,10 +78,10 @@ const Home = async ({ searchParams }: ISearchParams) => {
 
       <div className="mt-10 flex w-full flex-col gap-6">
         {filteredQuestions.map((question) => (
-          <>
-            <h2 key={question._id}>{question.title}</h2>
+          <div key={question._id}>
+            <h2>{question.title}</h2>
             <QuestionCard key={question._id} question={question} />
-          </>
+          </div>
         ))}
       </div>
     </div>

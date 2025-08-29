@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import TagCard from "@/components/cards/TagCard";
+import Metric from "@/components/Metric";
 import ROUTES from "@/constants/routes";
 import { getTimeStamp } from "@/lib/utils";
 import { IQuestion, ISimpleEntity } from "@/types/global";
@@ -32,6 +33,42 @@ const QuestionCard = ({
         {tags.map((tag: ISimpleEntity) => (
           <TagCard key={tag._id} _id={tag._id} name={tag.name} compact />
         ))}
+      </div>
+
+      <div className="flex-between mt-6 w-full flex-wrap gap-3">
+        <Metric
+          imgUrl={author.image}
+          alt={author.name}
+          value={author.value}
+          title={`asked  ${getTimeStamp(createdAt)}`}
+          href={ROUTES.PROFILE(author._id)}
+          textStyles="body-medium text-dark400_light700"
+          isAuthor={true}
+        />
+
+        <div className="flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start">
+          <Metric
+            imgUrl="/icons/like.svg"
+            alt="like"
+            value={upvotes}
+            title=" Votes"
+            textStyles="small-medium text-dark400_light800"
+          />
+          <Metric
+            imgUrl="/icons/message.svg"
+            alt="answers"
+            value={answers}
+            title=" Answers"
+            textStyles="small-medium text-dark400_light800"
+          />
+          <Metric
+            imgUrl="/icons/eye.svg"
+            alt="views"
+            value={views}
+            title=" Views"
+            textStyles="small-medium text-dark400_light800"
+          />
+        </div>
       </div>
     </div>
   );
