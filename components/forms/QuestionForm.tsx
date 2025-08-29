@@ -98,7 +98,7 @@ const QuestionForm = () => {
                 </div>
               </FormControl>
               <FormDescription className="body-regular text-light-500 mt-2.5">
-                Be specific
+                Add up to 5 tags
               </FormDescription>
               <FormMessage />
             </FormItem>
