@@ -81,6 +81,12 @@ const Editor = (
             sass: "sass",
             scss: "scss",
             bash: "bash",
+            json: "json",
+            js: "javascript",
+            ts: "typescript",
+            "": "unspecified",
+            tsx: "typescript React",
+            jsx: "javascript React",
           },
         }),
         toolbarPlugin({
