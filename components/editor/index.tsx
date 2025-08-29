@@ -17,6 +17,11 @@ import {
   Separator,
   BoldItalicUnderlineToggles,
   ListsToggle,
+  CreateLink,
+  InsertImage,
+  InsertTable,
+  InsertThematicBreak,
+  InsertCodeBlock,
   // type MDXEditorProps,
 } from "@mdxeditor/editor";
 import { basicDark } from "cm6-theme-basic-dark";
@@ -76,6 +81,14 @@ const Editor = (
 
                         <ListsToggle />
                         <Separator />
+
+                        <CreateLink />
+                        <InsertImage />
+                        <Separator />
+
+                        <InsertTable />
+                        <InsertThematicBreak />
+                        <InsertCodeBlock />
                       </>
                     ),
                   },
