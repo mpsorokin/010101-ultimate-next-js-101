@@ -10,9 +10,17 @@ import {
   markdownShortcutPlugin,
   MDXEditor,
   type MDXEditorMethods,
+  toolbarPlugin,
+  ConditionalContents,
+  ChangeCodeMirrorLanguage,
+  UndoRedo,
+  Separator,
   // type MDXEditorProps,
 } from "@mdxeditor/editor";
+import { basicDark } from "cm6-theme-basic-dark";
+import { useTheme } from "next-themes";
 import type { ForwardedRef } from "react";
+
 import "./dark-editor.css";
 
 interface IEditorProps {
@@ -29,9 +37,15 @@ const Editor = (
     ...props
   }: IEditorProps /* & MDXEditorProps */,
 ) => {
+  const { resolvedTheme } = useTheme();
+
+  const theme = resolvedTheme === "dark" ? [basicDark] : [];
+
   return (
     <MDXEditor
+      key={resolvedTheme}
       markdown={value}
+      ref={editorRef}
       onChange={fieldChange}
       className="background-light800_dark200 light-border-2 markdown-editor dark-editor w-full border"
       plugins={[
@@ -40,9 +54,30 @@ const Editor = (
         quotePlugin(),
         thematicBreakPlugin(),
         markdownShortcutPlugin(),
+        toolbarPlugin({
+          toolbarContents: () => {
+            return (
+              <ConditionalContents
+                options={[
+                  {
+                    when: (editor) => editor?.editorType === "codeblock",
+                    contents: () => <ChangeCodeMirrorLanguage />,
+                  },
+                  {
+                    fallback: () => (
+                      <>
+                        <UndoRedo />
+                        <Separator />
+                      </>
+                    ),
+                  },
+                ]}
+              />
+            );
+          },
+        }),
       ]}
       {...props}
-      ref={editorRef}
     />
   );
 };
