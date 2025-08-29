@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import dynamic from "next/dynamic";
-import { useRef } from "react";
+import { useRef, KeyboardEvent } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -34,6 +34,27 @@ const QuestionForm = () => {
       tags: [],
     },
   });
+
+  const handleInputKeyDown = (
+    e: KeyboardEvent<HTMLInputElement>,
+    field: { value: string[] },
+  ) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const tagInput = e.currentTarget.value.trim();
+
+      if (tagInput && tagInput.length < 15 && !field.value.includes(tagInput)) {
+        form.setValue("tags", [...field.value, tagInput]);
+        e.currentTarget.value = "";
+        form.clearErrors("tags");
+      } else if (tagInput && tagInput.length > 15) {
+        form.setError("tags", {
+          type: "manual",
+          message: "Tag should be at less than 15 characters",
+        });
+      }
+    }
+  };
 
   const handleCreateQuestion = () => {};
 
@@ -109,6 +130,7 @@ const QuestionForm = () => {
                     className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700
                    no-focus min-h-[56px] border"
                     placeholder="Add tags"
+                    onKeyDown={(e) => handleInputKeyDown(e, field)}
                   />
                   Tags
                 </div>
