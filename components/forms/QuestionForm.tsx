@@ -76,7 +76,10 @@ const QuestionForm = () => {
     }
   };
 
-  const handleCreateQuestion = () => {};
+  const handleCreateQuestion = (data: z.infer<typeof AskQuestionSchema>) => {
+    console.log("Create question");
+    console.log(data);
+  };
 
   return (
     <Form {...form}>
@@ -144,7 +147,6 @@ const QuestionForm = () => {
               <FormControl>
                 <div>
                   <Input
-                    required
                     type={"text"}
                     className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700
                    no-focus min-h-[56px] border"
