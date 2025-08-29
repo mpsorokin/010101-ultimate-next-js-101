@@ -15,6 +15,8 @@ import {
   ChangeCodeMirrorLanguage,
   UndoRedo,
   Separator,
+  BoldItalicUnderlineToggles,
+  ListsToggle,
   // type MDXEditorProps,
 } from "@mdxeditor/editor";
 import { basicDark } from "cm6-theme-basic-dark";
@@ -67,6 +69,12 @@ const Editor = (
                     fallback: () => (
                       <>
                         <UndoRedo />
+                        <Separator />
+
+                        <BoldItalicUnderlineToggles />
+                        <Separator />
+
+                        <ListsToggle />
                         <Separator />
                       </>
                     ),
