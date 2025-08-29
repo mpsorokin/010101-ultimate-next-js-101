@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -104,6 +105,15 @@ const QuestionForm = () => {
             </FormItem>
           )}
         />
+
+        <div className="mt-16 flex justify-end">
+          <Button
+            type="submit"
+            className="primary-gradient !text-light-900 w-fit"
+          >
+            Ask a question
+          </Button>
+        </div>
       </form>
     </Form>
   );
