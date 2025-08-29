@@ -5,6 +5,7 @@ import { MDXEditorMethods } from "@mdxeditor/editor";
 import dynamic from "next/dynamic";
 import { useRef, KeyboardEvent } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +27,7 @@ const Editor = dynamic(() => import("@/components/editor"), {
 const QuestionForm = () => {
   const editorRef = useRef<MDXEditorMethods>(null);
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof AskQuestionSchema>>({
     resolver: zodResolver(AskQuestionSchema),
     defaultValues: {
       title: "",
@@ -51,6 +52,11 @@ const QuestionForm = () => {
         form.setError("tags", {
           type: "manual",
           message: "Tag should be at less than 15 characters",
+        });
+      } else if (field.value.includes(tagInput)) {
+        form.setError("tags", {
+          type: "manual",
+          message: "Tag already exists",
         });
       }
     }
@@ -126,13 +132,16 @@ const QuestionForm = () => {
                   <Input
                     required
                     type={"text"}
-                    {...field}
                     className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700
                    no-focus min-h-[56px] border"
                     placeholder="Add tags"
                     onKeyDown={(e) => handleInputKeyDown(e, field)}
                   />
-                  Tags
+                  {field.value && field.value.length > 0 && (
+                    <div className="flex-start mt-2.5 flex-wrap gap-2.5">
+                      {field.value.map((tag: string) => `${tag}, `)}
+                    </div>
+                  )}
                 </div>
               </FormControl>
               <FormDescription className="body-regular text-light-500 mt-2.5">
