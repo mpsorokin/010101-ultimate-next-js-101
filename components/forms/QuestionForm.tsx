@@ -63,7 +63,18 @@ const QuestionForm = () => {
     }
   };
 
-  const handleTagRemove = (tag: string, field: string) => {};
+  const handleTagRemove = (tag: string, field: { value: string[] }) => {
+    const newTags = field.value.filter((t) => t !== tag);
+
+    form.setValue("tags", newTags);
+
+    if (newTags.length === 0) {
+      form.setError("tags", {
+        type: "manual",
+        message: "Tags are required",
+      });
+    }
+  };
 
   const handleCreateQuestion = () => {};
 
