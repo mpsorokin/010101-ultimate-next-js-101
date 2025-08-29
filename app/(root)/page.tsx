@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
@@ -77,7 +78,10 @@ const Home = async ({ searchParams }: ISearchParams) => {
 
       <div className="mt-10 flex w-full flex-col gap-6">
         {filteredQuestions.map((question) => (
-          <h2 key={question._id}>{question.title}</h2>
+          <>
+            <h2 key={question._id}>{question.title}</h2>
+            <QuestionCard key={question._id} question={question} />
+          </>
         ))}
       </div>
     </div>
