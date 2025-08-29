@@ -28,6 +28,7 @@ import {
   imagePlugin,
   codeBlockPlugin,
   codeMirrorPlugin,
+  diffSourcePlugin,
   // type MDXEditorProps,
 } from "@mdxeditor/editor";
 import { basicDark } from "cm6-theme-basic-dark";
@@ -88,7 +89,10 @@ const Editor = (
             tsx: "typescript React",
             jsx: "javascript React",
           },
+          autoLoadLanguageSupport: true,
+          codeMirrorExtensions: theme,
         }),
+        diffSourcePlugin({ viewMode: "rich-text", diffMarkdown: "" }),
         toolbarPlugin({
           toolbarContents: () => {
             return (
