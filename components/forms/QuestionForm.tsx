@@ -7,6 +7,7 @@ import { useRef, KeyboardEvent } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import TagCard from "@/components/cards/TagCard";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -61,6 +62,8 @@ const QuestionForm = () => {
       }
     }
   };
+
+  const handleTagRemove = (tag: string, field: string) => {};
 
   const handleCreateQuestion = () => {};
 
@@ -139,7 +142,17 @@ const QuestionForm = () => {
                   />
                   {field.value && field.value.length > 0 && (
                     <div className="flex-start mt-2.5 flex-wrap gap-2.5">
-                      {field.value.map((tag: string) => `${tag}, `)}
+                      {field.value.map((tag: string) => (
+                        <TagCard
+                          key={tag}
+                          _id={tag}
+                          name={tag}
+                          compact
+                          remove
+                          isButton
+                          handleRemove={() => handleTagRemove(tag, field)}
+                        />
+                      ))}
                     </div>
                   )}
                 </div>
