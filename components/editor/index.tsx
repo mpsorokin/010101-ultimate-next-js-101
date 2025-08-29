@@ -22,6 +22,12 @@ import {
   InsertTable,
   InsertThematicBreak,
   InsertCodeBlock,
+  linkPlugin,
+  linkDialogPlugin,
+  tablePlugin,
+  imagePlugin,
+  codeBlockPlugin,
+  codeMirrorPlugin,
   // type MDXEditorProps,
 } from "@mdxeditor/editor";
 import { basicDark } from "cm6-theme-basic-dark";
@@ -58,9 +64,25 @@ const Editor = (
       plugins={[
         headingsPlugin(),
         listsPlugin(),
+        linkPlugin(),
+        linkDialogPlugin(),
         quotePlugin(),
         thematicBreakPlugin(),
         markdownShortcutPlugin(),
+        tablePlugin(),
+        imagePlugin(),
+        codeBlockPlugin({ defaultCodeBlockLanguage: "javascript" }),
+        codeMirrorPlugin({
+          codeBlockLanguages: {
+            css: "css",
+            txt: "txt",
+            sql: "sql",
+            html: "html",
+            sass: "sass",
+            scss: "scss",
+            bash: "bash",
+          },
+        }),
         toolbarPlugin({
           toolbarContents: () => {
             return (
