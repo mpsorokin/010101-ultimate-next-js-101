@@ -1,0 +1,47 @@
+"use client";
+
+import "@mdxeditor/editor/style.css";
+
+import {
+  headingsPlugin,
+  listsPlugin,
+  quotePlugin,
+  thematicBreakPlugin,
+  markdownShortcutPlugin,
+  MDXEditor,
+  type MDXEditorMethods,
+  type MDXEditorProps,
+} from "@mdxeditor/editor";
+import type { ForwardedRef } from "react";
+
+interface IEditorProps {
+  value: string;
+  fieldChange: (value: string) => void;
+  editorRef: ForwardedRef<MDXEditorMethods> | null;
+}
+
+const Editor = (
+  {
+    value,
+    editorRef,
+    fieldChange,
+    ...props
+  }: IEditorProps /* & MDXEditorProps */,
+) => {
+  return (
+    <MDXEditor
+      markdown={value}
+      onChange={fieldChange}
+      plugins={[
+        headingsPlugin(),
+        listsPlugin(),
+        quotePlugin(),
+        thematicBreakPlugin(),
+        markdownShortcutPlugin(),
+      ]}
+      {...props}
+      ref={editorRef}
+    />
+  );
+};
+export default Editor;
