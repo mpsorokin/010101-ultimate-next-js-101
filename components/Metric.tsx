@@ -1,3 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
 interface IMetricProps {
   imgUrl: string;
   alt: string;
@@ -19,6 +21,15 @@ const Metric = ({
   imgStyles,
   isAuthor,
 }: IMetricProps) => {
-  return <p>M</p>;
+  const metricContent = (
+    <>
+      <Image src={imgUrl} alt={alt} width={16} height={16} />
+    </>
+  );
+  return href ? (
+    <Link href={href}>{metricContent}</Link>
+  ) : (
+    <div>{metricContent}</div>
+  );
 };
 export default Metric;
