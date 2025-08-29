@@ -22,6 +22,7 @@ const HomeFilter = () => {
 
   const handleTypeClick = (filter: string) => {
     let newUrl = "";
+
     if (filter) {
       setActive(filter);
 
@@ -35,7 +36,14 @@ const HomeFilter = () => {
 
       newUrl = removeKeysFromQuery({
         params: searchParams.toString(),
-        keysToRemove: [""],
+        keysToRemove: ["filter"],
+      });
+    }
+
+    if (filter === active) {
+      newUrl = removeKeysFromQuery({
+        params: searchParams.toString(),
+        keysToRemove: ["filter"],
       });
     }
 
