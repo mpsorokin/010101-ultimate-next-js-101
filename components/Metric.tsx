@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+
 interface IMetricProps {
   imgUrl: string;
   alt: string;
-  value: string;
+  value: string | number;
   title: string;
-  href: string;
+  href?: string;
   textStyles: string;
-  imgStyles: string;
-  isAuthor: boolean;
+  imgStyles?: string;
+  isAuthor?: boolean;
 }
 
 const Metric = ({
@@ -18,18 +19,34 @@ const Metric = ({
   title,
   href,
   textStyles,
-  imgStyles,
-  isAuthor,
+  imgStyles = "",
+  isAuthor = false,
 }: IMetricProps) => {
   const metricContent = (
     <>
-      <Image src={imgUrl} alt={alt} width={16} height={16} />
+      <Image
+        src={imgUrl}
+        alt={alt}
+        width={16}
+        height={16}
+        className={`rounded-full object-contain ${imgStyles}`}
+      />
+      <p className={`flex items-center gap-1 ${textStyles}`}>
+        {value}
+        <span
+          className={`small-regular line-clamp-1 ${isAuthor ? "max-sm:hidden" : ""}`}
+        >
+          {title}
+        </span>
+      </p>
     </>
   );
   return href ? (
-    <Link href={href}>{metricContent}</Link>
+    <Link href={href} className="flex-center gap-1">
+      {metricContent}
+    </Link>
   ) : (
-    <div>{metricContent}</div>
+    <div className="flex-center gap-1">{metricContent}</div>
   );
 };
 export default Metric;
