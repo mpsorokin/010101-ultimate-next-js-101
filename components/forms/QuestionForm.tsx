@@ -64,19 +64,12 @@ const QuestionForm = () => {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
               <FormLabel className="capitalize paragraph-semibold text-dark400_light800">
-                Question Title <span className="text-primary-500">*</span>
+                Detailed explanation of your problem{" "}
+                <span className="text-primary-500">*</span>
               </FormLabel>
-              <FormControl>
-                <Input
-                  required
-                  type={"text"}
-                  {...field}
-                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700
-                   no-focus min-h-[56px] border"
-                />
-              </FormControl>
+              <FormControl>Editor</FormControl>
               <FormDescription className="body-regular text-light-500 mt-2.5">
-                Be specific
+                introduce the problem
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -85,20 +78,24 @@ const QuestionForm = () => {
 
         <FormField
           control={form.control}
-          name="title"
+          name="tags"
           render={({ field }) => (
-            <FormItem className="flex w-full flex-col">
+            <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="capitalize paragraph-semibold text-dark400_light800">
-                Question Title <span className="text-primary-500">*</span>
+                Tags <span className="text-primary-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  required
-                  type={"text"}
-                  {...field}
-                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700
+                <div>
+                  <Input
+                    required
+                    type={"text"}
+                    {...field}
+                    className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700
                    no-focus min-h-[56px] border"
-                />
+                    placeholder="Add tags"
+                  />
+                  Tags
+                </div>
               </FormControl>
               <FormDescription className="body-regular text-light-500 mt-2.5">
                 Be specific
