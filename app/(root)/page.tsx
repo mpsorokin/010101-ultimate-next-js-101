@@ -38,11 +38,16 @@ interface ISearchParams {
 }
 
 const Home = async ({ searchParams }: ISearchParams) => {
-  const { query = "" } = await searchParams;
+  const { query = "", filter = "" } = await searchParams;
 
-  const filteredQuestions = questions.filter((question) =>
-    question.title.toLowerCase().includes(query?.toLowerCase()),
-  );
+  const filteredQuestions = questions.filter((question) => {
+    const matchesQuery = question.title
+      .toLowerCase()
+      .includes(query?.toLowerCase());
+    const matchesFilter = question.tags[0].name.toLowerCase() === filter;
+
+    return matchesQuery && matchesFilter;
+  });
 
   return (
     <div>
