@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 import User from "@/database/user.model";
 import handleError from "@/lib/handlers/error";
 import { NotFoundError } from "@/lib/http-errors";
@@ -18,6 +20,14 @@ export async function GET(
     const user = await User.findById(id);
 
     if (!user) throw new NotFoundError("User does not exist");
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: user,
+      },
+      { status: 200 },
+    );
   } catch (e) {
     return handleError(e, "api") as APIErrorResponse;
   }
