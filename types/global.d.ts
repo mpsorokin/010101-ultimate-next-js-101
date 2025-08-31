@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 interface ISimpleEntity {
   _id: string;
   name: string;
@@ -29,3 +31,7 @@ type ActionResponse<T = null> = {
 };
 
 type SuccessResponse<T = null> = ActionResponse<T> & { success: true };
+type ErrorResponse = ActionResponse<undefined> & { success: false };
+
+type APIErrorResponse = NextResponse<ErrorResponse>;
+type APIResponse<T = null> = NextResponse<SuccessResponse<T>>;
