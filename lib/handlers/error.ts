@@ -45,6 +45,11 @@ const handleError = (error: unknown, responseType: ResponseType = "server") => {
       error.flatten().fieldErrors as Record<string, string[]>,
     );
 
+    logger.error(
+      { err: error },
+      `Validation Error: ${validationError.message}`,
+    );
+
     return formatResponse(
       responseType,
       validationError.statusCode,
@@ -54,10 +59,12 @@ const handleError = (error: unknown, responseType: ResponseType = "server") => {
   }
 
   if (error instanceof Error) {
+    logger.error(error.message);
     return formatResponse(responseType, 500, error.message);
   }
 
-  return formatResponse(responseType, 500, "Unexpected error occurred.");
+  logger.error({ err: error }, "Unexpected error occurred");
+  return formatResponse(responseType, 500, "Unexpected error occurred");
 };
 
 export default handleError;
