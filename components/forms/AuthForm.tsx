@@ -54,6 +54,14 @@ const AuthForm = <T extends FieldValues>({
         title: "success",
         description: formType === "SIGN_IN" ? "Sign in" : "Sign up",
       });
+
+      router.push(ROUTES.HOME);
+    } else {
+      toast({
+        title: `Error ${result.status}`,
+        description: result?.error?.message,
+        variant: "destructuve",
+      });
     }
   };
 
