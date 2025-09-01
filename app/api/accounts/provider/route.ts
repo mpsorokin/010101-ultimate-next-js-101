@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
     const account = await Account.findOne({ providerAccountId });
 
-    if (!account) throw new NotFoundError("User does not exist");
+    if (!account) throw new NotFoundError("Account does not exist");
 
     return NextResponse.json({ success: true, data: account }, { status: 200 });
   } catch (e) {
