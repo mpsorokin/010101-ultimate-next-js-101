@@ -35,15 +35,20 @@ export async function signUpWithCredentials(
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
-    const newUser = await User.create({ name, username, email }, { session });
-
-    await Account.create({
-      userId: newUser._id,
-      name,
-      provider: "credentials",
-      providerAccountId: email,
-      password: hashedPassword,
+    const [newUser] = await User.create([{ name, username, email }], {
+      session,
     });
+
+    await Account.create(
+      {
+        userId: newUser._id,
+        name,
+        provider: "credentials",
+        providerAccountId: email,
+        password: hashedPassword,
+      },
+      { session },
+    );
   } catch (err) {
     await session.abortTransaction();
 
