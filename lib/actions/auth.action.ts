@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
+import { signIn } from "@/auth";
 import Account from "@/database/account.model";
 import User from "@/database/user.model";
 import action from "@/lib/handlers/action";
@@ -49,6 +50,10 @@ export async function signUpWithCredentials(
       },
       { session },
     );
+
+    await signIn("credentials", { email, password, redirect: false });
+
+    return { success: true };
   } catch (err) {
     await session.abortTransaction();
 
