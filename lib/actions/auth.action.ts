@@ -1,5 +1,7 @@
+import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
+import Account from "@/database/account.model";
 import User from "@/database/user.model";
 import action from "@/lib/handlers/action";
 import handleError from "@/lib/handlers/error";
@@ -31,6 +33,17 @@ export async function signUpWithCredentials(
     if (existingUsername) {
       throw new Error("Username already exists");
     }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newUser = await User.create({ name, username, email }, { session });
+
+    await Account.create({
+      userId: newUser._id,
+      name,
+      provider: "credentials",
+      providerAccountId: email,
+      password: hashedPassword,
+    });
   } catch (err) {
     await session.abortTransaction();
 
