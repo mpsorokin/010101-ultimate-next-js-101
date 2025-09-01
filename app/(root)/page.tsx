@@ -5,6 +5,7 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
+import { api } from "@/lib/api";
 import handleError from "@/lib/handlers/error";
 import dbConnect from "@/lib/mongoose";
 
@@ -50,6 +51,8 @@ interface ISearchParams {
 
 const Home = async ({ searchParams }: ISearchParams) => {
   // await test();
+  // const usrs = await api.users.getAll();
+  // console.log(usrs);
 
   const { query = "", filter = "" } = await searchParams;
 
