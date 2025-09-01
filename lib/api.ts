@@ -1,3 +1,4 @@
+import { IUser } from "@/database/user.model";
 import { fetchHandler } from "@/lib/handlers/fetch";
 
 const API_BASE_URL =
@@ -11,6 +12,11 @@ export const api = {
       fetchHandler(`${API_BASE_URL}/users/email`, {
         method: "POST",
         body: JSON.stringify({ email }),
+      }),
+    create: (userData: Partial<IUser>) =>
+      fetchHandler(`${API_BASE_URL}/users`, {
+        method: "POST",
+        body: JSON.stringify({ userData }),
       }),
   },
 };
