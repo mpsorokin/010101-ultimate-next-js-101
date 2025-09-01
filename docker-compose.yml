@@ -9,6 +9,15 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: secret
+    command: >
+      bash -c "
+        if [ ! -f /data/configdb/mongo-keyfile ]; then
+          openssl rand -base64 756 > /data/configdb/mongo-keyfile &&
+          chmod 600 /data/configdb/mongo-keyfile &&
+          chown mongodb:mongodb /data/configdb/mongo-keyfile;
+        fi &&
+        exec mongod --replSet rs0 --bind_ip_all --keyFile /data/configdb/mongo-keyfile
+      "
     volumes:
       - mongo_data:/data/db
 
