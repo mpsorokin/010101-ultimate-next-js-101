@@ -2,11 +2,7 @@ import { NextResponse } from "next/server";
 
 import Account from "@/database/account.model";
 import handleError from "@/lib/handlers/error";
-import {
-  ForbiddenError,
-  NotFoundError,
-  ValidationError,
-} from "@/lib/http-errors";
+import { NotFoundError, ValidationError } from "@/lib/http-errors";
 import dbConnect from "@/lib/mongoose";
 import { AccountSchema } from "@/lib/validations";
 import { APIErrorResponse } from "@/types/global";
@@ -76,9 +72,9 @@ export async function PUT(
   try {
     await dbConnect();
 
-    const user = await User.findById(id);
+    const account = await Account.findById(id);
 
-    if (!user) throw new NotFoundError("User does not exist");
+    if (!account) throw new NotFoundError("Account does not exist");
 
     const body = await request.json();
 
