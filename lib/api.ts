@@ -16,7 +16,12 @@ export const api = {
     create: (userData: Partial<IUser>) =>
       fetchHandler(`${API_BASE_URL}/users`, {
         method: "POST",
-        body: JSON.stringify({ userData }),
+        body: JSON.stringify(userData),
+      }),
+    update: (id: string, userData: Partial<IUser>) =>
+      fetchHandler(`${API_BASE_URL}/users/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(userData),
       }),
   },
 };
