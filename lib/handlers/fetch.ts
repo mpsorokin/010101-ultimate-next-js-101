@@ -1,4 +1,5 @@
 import handleError from "@/lib/handlers/error";
+import { RequestError } from "@/lib/http-errors";
 import logger from "@/lib/logger";
 import { ActionResponse } from "@/types/global";
 
@@ -37,6 +38,17 @@ export async function fetchHandler<T>(
   };
 
   try {
+    const response = await fetch(url, config);
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new RequestError(
+        response.status,
+        `HTTP error in ${url} with status ${response.status}`,
+      );
+    }
+
+    return await response.json();
   } catch (e) {
     const error = isError(e) ? e : new Error("Unknown error");
 
