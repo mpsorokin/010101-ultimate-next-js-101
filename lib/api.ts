@@ -23,5 +23,7 @@ export const api = {
         method: "PUT",
         body: JSON.stringify(userData),
       }),
+    delete: (id: string) =>
+      fetchHandler(`${API_BASE_URL}/users/${id}`, { method: "DELETE" }),
   },
 };
