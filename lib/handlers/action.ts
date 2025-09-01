@@ -32,7 +32,7 @@ async function action<T>({
     }
   }
 
-  const session: Session | null = null;
+  let session: Session | null = null;
 
   if (authorize) {
     session = await auth();
