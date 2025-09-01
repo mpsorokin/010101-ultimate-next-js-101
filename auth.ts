@@ -1,6 +1,6 @@
-import Credentials from "@auth/core/providers/credentials";
 import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 
@@ -46,9 +46,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (isValidPassword) {
             return {
               id: existingUser.id,
+              name: existingUser.name,
+              email: existingUser.email,
+              image: existingUser.image || "no image",
             };
           }
         }
+        return null;
       },
     }),
   ],
