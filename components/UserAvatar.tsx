@@ -22,7 +22,7 @@ const userAvatar = ({
     .map((word: string) => word[0])
     .join("")
     .toUpperCase()
-    .splice(0, 2);
+    .slice(0, 2);
 
   return (
     <Link href={ROUTES.PROFILE(id)}>
