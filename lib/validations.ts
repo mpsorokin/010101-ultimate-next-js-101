@@ -107,3 +107,7 @@ export const AccountSchema = z.object({
   provider: z.string().min(1, "Provider is required"),
   providerAccountId: z.string().optional(),
 });
+
+export const EditQuestionSchema = AskQuestionSchema.extend({
+  questionId: z.string().min(1, { message: "Question is required" }),
+});
