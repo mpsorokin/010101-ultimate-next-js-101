@@ -5,18 +5,18 @@ import mongoose from "mongoose";
 import Question from "@/database/question.model";
 import TagQuestion from "@/database/tag-question.model";
 import Tag from "@/database/tag.model";
-import action from "@/lib/handlers/action";
-import handleError from "@/lib/handlers/error";
-import { AskQuestionSchema } from "@/lib/validations";
 import { ActionResponse, ErrorResponse } from "@/types/global";
+
+import action from "../handlers/action";
+import handleError from "../handlers/error";
+import { AskQuestionSchema } from "../validations";
 
 export async function createQuestion(
   params: CreateQuestionParams,
-): Promise<ActionResponse<typeof Question>> {
+): Promise<ActionResponse<Question>> {
   const validationResult = await action({
     params,
     schema: AskQuestionSchema,
-    // only auth users can make a request
     authorize: true,
   });
 
@@ -37,11 +37,10 @@ export async function createQuestion(
     );
 
     if (!question) {
-      throw new Error("Failed to create a question");
+      throw new Error("Failed to create question");
     }
 
     const tagIds: mongoose.Types.ObjectId[] = [];
-
     const tagQuestionDocuments = [];
 
     for (const tag of tags) {
@@ -62,18 +61,16 @@ export async function createQuestion(
 
     await Question.findByIdAndUpdate(
       question._id,
-      {
-        $push: { tags: { $each: tagIds } },
-      },
+      { $push: { tags: { $each: tagIds } } },
       { session },
     );
 
     await session.commitTransaction();
 
-    return { success: true, data: question };
-  } catch (err) {
+    return { success: true, data: JSON.parse(JSON.stringify(question)) };
+  } catch (error) {
     await session.abortTransaction();
-    return handleError(err) as ErrorResponse;
+    return handleError(error) as ErrorResponse;
   } finally {
     session.endSession();
   }
