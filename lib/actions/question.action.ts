@@ -3,6 +3,7 @@
 import mongoose from "mongoose";
 
 import Question from "@/database/question.model";
+import TagQuestion from "@/database/tag-question.model";
 import Tag from "@/database/tag.model";
 import action from "@/lib/handlers/action";
 import handleError from "@/lib/handlers/error";
@@ -44,12 +45,32 @@ export async function createQuestion(
     const tagQuestionDocuments = [];
 
     for (const tag of tags) {
-      const existingTags = await Tag.findOneAndUpdate(
+      const existingTag = await Tag.findOneAndUpdate(
         { name: { $regexp: new RegExp(`^${tag}$`, "i") } },
         { $setOnInsert: { name: tag }, $inc: { questions: 1 } },
         { upsert: true, new: true, session },
       );
+
+      tagIds.push(existingTag._id);
+      tagQuestionDocuments.push({
+        tag: existingTag._id,
+        question: question._id,
+      });
     }
+
+    await TagQuestion.insertMany(tagQuestionDocuments, { session });
+
+    await Question.findByIdAndUpdate(
+      question._id,
+      {
+        $push: { tags: { $each: tagIds } },
+      },
+      { session },
+    );
+
+    await session.commitTransaction();
+
+    return { success: true, data: question };
   } catch (err) {
     await session.abortTransaction();
     return handleError(err) as ErrorResponse;
