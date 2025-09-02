@@ -12,7 +12,7 @@ import { ActionResponse, ErrorResponse } from "@/types/global";
 
 export async function createQuestion(
   params: CreateQuestionParams,
-): Promise<ActionResponse<Question>> {
+): Promise<ActionResponse<typeof Question>> {
   const validationResult = await action({
     params,
     schema: AskQuestionSchema,
@@ -46,7 +46,7 @@ export async function createQuestion(
 
     for (const tag of tags) {
       const existingTag = await Tag.findOneAndUpdate(
-        { name: { $regexp: new RegExp(`^${tag}$`, "i") } },
+        { name: { $regex: new RegExp(`^${tag}$`, "i") } },
         { $setOnInsert: { name: tag }, $inc: { questions: 1 } },
         { upsert: true, new: true, session },
       );
