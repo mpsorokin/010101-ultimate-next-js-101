@@ -3,6 +3,7 @@
 import mongoose from "mongoose";
 
 import Question from "@/database/question.model";
+import Tag from "@/database/tag.model";
 import action from "@/lib/handlers/action";
 import handleError from "@/lib/handlers/error";
 import { AskQuestionSchema } from "@/lib/validations";
@@ -29,9 +30,26 @@ export async function createQuestion(
   session.startTransaction();
 
   try {
-    const [qqq] = await Question.create([{ title, content, author: userId }], {
-      session,
-    });
+    const [question] = await Question.create(
+      [{ title, content, author: userId }],
+      { session },
+    );
+
+    if (!question) {
+      throw new Error("Failed to create a question");
+    }
+
+    const tagIds: mongoose.Types.ObjectId[] = [];
+
+    const tagQuestionDocuments = [];
+
+    for (const tag of tags) {
+      const existingTags = await Tag.findOneAndUpdate(
+        { name: { $regexp: new RegExp(`^${tag}$`, "i") } },
+        { $setOnInsert: { name: tag }, $inc: { questions: 1 } },
+        { upsert: true, new: true, session },
+      );
+    }
   } catch (err) {
     await session.abortTransaction();
     return handleError(err) as ErrorResponse;
