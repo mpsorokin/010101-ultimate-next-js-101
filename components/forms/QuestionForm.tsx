@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { useRef, KeyboardEvent } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,6 +20,9 @@ import {
   FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import ROUTES from "@/constants/routes";
+import { toast } from "@/hooks/use-toast";
+import { createQuestion } from "@/lib/actions/question.action";
 import { AskQuestionSchema } from "@/lib/validations";
 
 const Editor = dynamic(() => import("@/components/editor"), {
@@ -26,6 +30,7 @@ const Editor = dynamic(() => import("@/components/editor"), {
 });
 
 const QuestionForm = () => {
+  const router = useRouter();
   const editorRef = useRef<MDXEditorMethods>(null);
 
   const form = useForm<z.infer<typeof AskQuestionSchema>>({
@@ -76,9 +81,24 @@ const QuestionForm = () => {
     }
   };
 
-  const handleCreateQuestion = (data: z.infer<typeof AskQuestionSchema>) => {
-    console.log("Create question");
-    console.log(data);
+  const handleCreateQuestion = async (
+    data: z.infer<typeof AskQuestionSchema>,
+  ) => {
+    const result = await createQuestion(data);
+    if (result.success) {
+      toast({
+        title: "Success",
+        description: "Question created successfully",
+      });
+
+      router.push(ROUTES.QUESTION(result.data._id));
+    } else {
+      toast({
+        title: `Error: ${result.status}`,
+        description: result.error?.message || "Something went wrong",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

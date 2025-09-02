@@ -1,7 +1,8 @@
 import { RouteParams } from "@/types/global";
 
-const QuestionDetailsPage = ({ params }: RouteParams) => {
-  return <p>QuestionDetailsPage</p>;
+const QuestionDetails = async ({ params }: RouteParams) => {
+  const { id } = await params;
+  return <div>Question Page: {id}</div>;
 };
 
-export default QuestionDetailsPage;
+export default QuestionDetails;
