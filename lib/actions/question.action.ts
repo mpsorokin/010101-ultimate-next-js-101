@@ -109,7 +109,65 @@ export async function editQuestion(
     if (question.title !== title || question.content !== content) {
       question.title = title;
       question.content = content;
+      await question.save({ session });
     }
+    const tagsToAdd = tags.filter(
+      (tag) => !question.tags.includes(tag.toLowerCase()),
+    );
+    const tagsToRemove = question.tags.filter(
+      (tag) => !tags.includes(tag.name.toLowerCase()),
+    );
+
+    const newTagDocuments = [];
+    if (tagsToAdd.length > 0) {
+      for (const tag of tagsToAdd) {
+        const existingTag = await Tag.findOneAndUpdate(
+          { name: { $regex: new RegExp(`^${tag}$`, "i") } },
+          { $setOnInsert: { name: tag }, $inc: { questions: 1 } },
+          { upsert: true, new: true, session },
+        );
+
+        if (existingTag) {
+          newTagDocuments.push({
+            tag: existingTag._id,
+            question: questionId,
+          });
+
+          question.tags.push(existingTag._id);
+        }
+      }
+    }
+
+    if (tagsToRemove.length > 0) {
+      const tagIdsToRemove = tagsToRemove.map((tag) => tag._id);
+
+      await Tag.updateMany(
+        { _id: { $in: tagIdsToRemove } },
+        { $inc: { questions: -1 } },
+        { session },
+      );
+
+      await TagQuestion.deleteMany(
+        {
+          tag: { $in: tagIdsToRemove },
+          question: questionId,
+        },
+        { session },
+      );
+
+      question.tags = question.tags.filter(
+        (tagId) => !tagsToRemove.includes(tagId),
+      );
+    }
+
+    if (newTagDocuments.length > 0) {
+      await TagQuestion.insertMany(newTagDocuments, { session });
+    }
+
+    await question.save();
+    await session.commitTransaction();
+
+    return { success: true, data: JSON.parse(JSON.stringify(question)) };
   } catch (error) {
     await session.abortTransaction();
     return handleError(error) as ErrorResponse;
