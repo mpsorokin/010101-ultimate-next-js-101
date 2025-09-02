@@ -19,9 +19,10 @@ const userAvatar = ({
 }) => {
   const initials = name
     .split(" ")
-    .map((word) => word[0])
+    .map((word: string) => word[0])
     .join("")
-    .toUpperCase();
+    .toUpperCase()
+    .splice(0, 2);
 
   return (
     <Link href={ROUTES.PROFILE(id)}>
