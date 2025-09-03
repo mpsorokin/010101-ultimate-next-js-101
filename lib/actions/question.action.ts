@@ -267,4 +267,26 @@ export async function getQuestions(
     default:
       sortCriteria = { createdAt: -1 };
   }
+
+  try {
+    const totalQuestions = await Question.countDocuments(filterQuery);
+
+    const questions = await Question.find(filterQuery)
+      .populate("tags", "name")
+      .populate("author", "name image")
+      .lean()
+      .sort(sortCriteria)
+      .skip(skip)
+      .limit(limit);
+
+    const isNext = totalQuestions > skip + questions.length;
+
+    return {
+      success: true,
+      // fixes error when pass huge data
+      data: { questions: JSON.parse(JSON.stringify(questions)), isNext },
+    };
+  } catch (err) {
+    return handleError(err) as ErrorResponse;
+  }
 }

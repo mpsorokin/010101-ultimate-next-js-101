@@ -5,43 +5,25 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
-
-const questions = [
-  {
-    _id: "1",
-    title: "How to learn React",
-    description: "I want to learn React, anyone can help me?",
-    tags: [
-      { _id: "1", name: "React" },
-      { _id: "2", name: "javascript" },
-    ],
-    author: { _id: "1", name: "John Doe", image: "/images/img_avatar.png" },
-    upvotes: 10,
-    answers: 5,
-    views: 150,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    _id: "2",
-    title: "How to learn JavaScript",
-    description: "I want to learn Javascript, anyone can help me?",
-    tags: [{ _id: "2", name: "javascript" }],
-    author: { _id: "1", name: "John Doe", image: "/images/img_avatar.png" },
-    upvotes: 10,
-    answers: 5,
-    views: 150,
-    createdAt: new Date().toISOString(),
-  },
-];
+import { getQuestions } from "@/lib/actions/question.action";
 
 interface ISearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 
 const Home = async ({ searchParams }: ISearchParams) => {
-  const { query = "", filter = "" } = await searchParams;
+  const { page, pageSize, query, filter } = await searchParams;
 
-  const filteredQuestions = questions.filter((question) => {
+  const { success, data, error } = await getQuestions({
+    page: Number(page) || 1,
+    pageSize: Number(pageSize) || 10,
+    query: query || "",
+    filter: filter || "",
+  });
+
+  const { questions } = data || {};
+
+  /* const filteredQuestions = questions.filter((question) => {
     const matchesQuery = question.title
       .toLowerCase()
       .includes(query?.toLowerCase());
@@ -50,7 +32,7 @@ const Home = async ({ searchParams }: ISearchParams) => {
       : true;
 
     return matchesQuery && matchesFilter;
-  });
+  }); */
 
   return (
     <div>
@@ -77,12 +59,18 @@ const Home = async ({ searchParams }: ISearchParams) => {
       <HomeFilter />
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {filteredQuestions.map((question) => (
-          <div key={question._id}>
-            <h2>{question.title}</h2>
-            <QuestionCard key={question._id} question={question} />
+        {questions && questions.length > 0 ? (
+          questions.map((question) => (
+            <div key={question._id}>
+              <h2>{question.title}</h2>
+              <QuestionCard key={question._id} question={question} />
+            </div>
+          ))
+        ) : (
+          <div className="mt-10 flex w-full items-center justify-center">
+            <p className="text-dark400_light700">No questions found</p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
