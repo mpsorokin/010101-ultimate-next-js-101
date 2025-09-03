@@ -2,7 +2,7 @@
 
 import mongoose, { FilterQuery } from "mongoose";
 
-import Question from "@/database/question.model";
+import Question, { IQuestionDoc } from "@/database/question.model";
 import TagQuestion from "@/database/tag-question.model";
 import Tag from "@/database/tag.model";
 import {
@@ -15,7 +15,6 @@ import {
   ActionResponse,
   ErrorResponse,
   IPaginatedSearchParams,
-  IQuestion,
 } from "@/types/global";
 
 import action from "../handlers/action";
@@ -88,7 +87,7 @@ export async function createQuestion(
 
 export async function editQuestion(
   params: EditQuestionParams,
-): Promise<ActionResponse<typeof Question>> {
+): Promise<ActionResponse<IQuestionDoc>> {
   const validationResult = await action({
     params,
     schema: EditQuestionSchema,
