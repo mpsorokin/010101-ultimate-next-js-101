@@ -128,6 +128,7 @@ export async function editQuestion(
     );
 
     const newTagDocuments = [];
+
     if (tagsToAdd.length > 0) {
       for (const tag of tagsToAdd) {
         const existingTag = await Tag.findOneAndUpdate(
@@ -165,7 +166,7 @@ export async function editQuestion(
       );
 
       question.tags = question.tags.filter(
-        (tagId) => !tagsToRemove.includes(tagId),
+        (tagId: mongoose.Types.ObjectId) => !tagIdsToRemove.includes(tagId),
       );
     }
 
