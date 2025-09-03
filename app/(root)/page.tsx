@@ -76,7 +76,7 @@ const Home = async ({ searchParams }: ISearchParams) => {
       ) : (
         <div className="mt-10 flex w-full items-center justify-center">
           <p className="text-dark400_light700">
-            {error?.message || "Failed to fetch"}
+            {error?.message || "Failed to fetch questions"}
           </p>
         </div>
       )}
