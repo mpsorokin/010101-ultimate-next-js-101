@@ -9,8 +9,14 @@ import {
   AskQuestionSchema,
   EditQuestionSchema,
   GetQuestionSchema,
+  PaginatedSearchParamsSchema,
 } from "@/lib/validations";
-import { ActionResponse, ErrorResponse } from "@/types/global";
+import {
+  ActionResponse,
+  ErrorResponse,
+  IPaginatedSearchParams,
+  IQuestion,
+} from "@/types/global";
 
 import action from "../handlers/action";
 import handleError from "../handlers/error";
@@ -205,5 +211,20 @@ export async function getQuestion(
     return { success: true, data: JSON.parse(JSON.stringify(question)) };
   } catch (error) {
     return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function getQuestions(
+  params: IPaginatedSearchParams,
+): Promise<
+  ActionResponse<{ questions: (typeof Question)[]; isNext: boolean }>
+> {
+  const validationResult = await action({
+    params,
+    schema: PaginatedSearchParamsSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
   }
 }
