@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { err } from "pino-std-serializers";
 
 import QuestionCard from "@/components/cards/QuestionCard";
 import DataRenderer from "@/components/DataRenderer";
@@ -60,6 +59,7 @@ const Home = async ({ searchParams }: ISearchParams) => {
       </section>
 
       <HomeFilter />
+
       <DataRenderer
         success={success}
         error={error}
@@ -68,34 +68,12 @@ const Home = async ({ searchParams }: ISearchParams) => {
         render={(questions) =>
           questions.map((question) => (
             <div key={question._id}>
-              <h2>{question.title}</h2>
+              {/* <h2>{question.title}</h2> */}
               <QuestionCard key={question._id} question={question} />
             </div>
           ))
         }
       />
-      {/* {success ? (
-        <div className="mt-10 flex w-full flex-col gap-6">
-          {questions && questions.length > 0 ? (
-            questions.map((question) => (
-              <div key={question._id}>
-                <h2>{question.title}</h2>
-                <QuestionCard key={question._id} question={question} />
-              </div>
-            ))
-          ) : (
-            <div className="mt-10 flex w-full items-center justify-center">
-              <p className="text-dark400_light700">No questions found</p>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="mt-10 flex w-full items-center justify-center">
-          <p className="text-dark400_light700">
-            {error?.message || "Failed to fetch questions"}
-          </p>
-        </div>
-      )} */}
     </div>
   );
 };

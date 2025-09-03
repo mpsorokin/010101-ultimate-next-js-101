@@ -19,7 +19,7 @@ interface IDataRendererProps<T> {
       href: string;
     };
   };
-  render?: (data: T[]) => React.ReactNode;
+  render: (data: T[]) => React.ReactNode;
 }
 
 interface IStateSkeletonProps {
@@ -83,7 +83,7 @@ const DataRenderer = <T,>({
   empty = DEFAULT_EMPTY,
   render,
 }: IDataRendererProps<T>) => {
-  if (true) {
+  if (!data || data.length === 0) {
     return (
       <StateSkeleton
         image={{
@@ -97,7 +97,7 @@ const DataRenderer = <T,>({
       />
     );
   }
-  return <p>DR</p>;
+  return <div>{render(data)}</div>;
 };
 
 export default DataRenderer;
