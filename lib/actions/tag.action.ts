@@ -33,7 +33,7 @@ export const getTags = async (
     filterQuery.$or = [{ title: { $regex: new RegExp(`^${query}$`, "i") } }];
   }
 
-  const sortCriteria = {};
+  let sortCriteria = {};
 
   switch (filter) {
     case "recent":
@@ -59,6 +59,16 @@ export const getTags = async (
       .sort(sortCriteria)
       .skip(skip)
       .limit(limit);
+
+    const isNext = totalTags > skip + tags.length;
+
+    return {
+      success: true,
+      data: {
+        tags: JSON.parse(JSON.stringify(tags)),
+        isNext,
+      },
+    };
   } catch (err) {
     return handleError(err) as ErrorResponse;
   }
