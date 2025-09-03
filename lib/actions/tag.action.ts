@@ -1,5 +1,6 @@
 import { FilterQuery } from "mongoose";
 
+import { Tag } from "@/database";
 import { ITag } from "@/database/tag.model";
 import action from "@/lib/handlers/action";
 import handleError from "@/lib/handlers/error";
@@ -49,5 +50,16 @@ export const getTags = async (
       break;
     default:
       sortCriteria = { createdAt: -1 };
+  }
+
+  try {
+    const totalTags = await Tag.countDocuments(filterQuery);
+
+    const tags = await Tag.find(filterQuery)
+      .sort(sortCriteria)
+      .skip(skip)
+      .limit(limit);
+  } catch (err) {
+    return handleError(err) as ErrorResponse;
   }
 };
