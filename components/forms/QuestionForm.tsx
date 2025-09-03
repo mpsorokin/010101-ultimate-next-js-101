@@ -244,7 +244,7 @@ const QuestionForm = ({ question, isEdit = false }: IQuestionFormProps) => {
                 <span>Submitting</span>
               </>
             ) : (
-              <>Ask A Question</>
+              <>{isEdit ? "Edit" : "Ask A Question"} </>
             )}
           </Button>
         </div>
