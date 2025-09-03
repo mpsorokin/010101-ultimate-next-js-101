@@ -4,7 +4,7 @@ import mongoose, { FilterQuery } from "mongoose";
 
 import Question, { IQuestionDoc } from "@/database/question.model";
 import TagQuestion from "@/database/tag-question.model";
-import Tag from "@/database/tag.model";
+import Tag, { ITagDoc } from "@/database/tag.model";
 import {
   AskQuestionSchema,
   EditQuestionSchema,
@@ -121,10 +121,14 @@ export async function editQuestion(
       await question.save({ session });
     }
     const tagsToAdd = tags.filter(
-      (tag) => !question.tags.includes(tag.toLowerCase()),
+      (tag) =>
+        !question.tags.some((t: ITagDoc) =>
+          t.name.toLowerCase().includes(tag.toLowerCase()),
+        ),
     );
     const tagsToRemove = question.tags.filter(
-      (tag) => !tags.includes(tag.name.toLowerCase()),
+      (tag: ITagDoc) =>
+        !tags.some((t) => t.toLowerCase() === tag.name.toLowerCase()),
     );
 
     const newTagDocuments = [];
@@ -166,7 +170,10 @@ export async function editQuestion(
       );
 
       question.tags = question.tags.filter(
-        (tagId: mongoose.Types.ObjectId) => !tagIdsToRemove.includes(tagId),
+        (tag: mongoose.Types.ObjectId) =>
+          !tagIdsToRemove.some((id: mongoose.Types.ObjectId) =>
+            id.equals(tag._id),
+          ),
       );
     }
 
