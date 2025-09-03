@@ -65,7 +65,12 @@ const StateSkeleton = ({
     </p>
     {button && (
       <Link href={button.href}>
-        <Button>{button.text}</Button>
+        <Button
+          className="paragraph-medium mt-5 min-h-[46px] rounded-lg bg-primary-500 px-4 py-3 text-white-900
+        hover:bg-primary-500 cursor-pointer"
+        >
+          {button.text}
+        </Button>
       </Link>
     )}
   </div>
