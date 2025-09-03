@@ -1,6 +1,7 @@
-import { image } from "mdast-util-to-markdown/lib/handle";
 import Image from "next/image";
+import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
 import { DEFAULT_EMPTY } from "@/constants/states";
 
 interface IDataRendererProps<T> {
@@ -59,6 +60,14 @@ const StateSkeleton = ({
       />
     </>
     <h2 className="mt-8 h2-bold text-dark200_light900">{title}</h2>
+    <p className="body-regular text-dark500_light700 my-3.5 max-w-md text-center">
+      {message}
+    </p>
+    {button && (
+      <Link href={button.href}>
+        <Button>{button.text}</Button>
+      </Link>
+    )}
   </div>
 );
 
