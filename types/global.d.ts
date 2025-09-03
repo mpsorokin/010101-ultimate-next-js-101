@@ -12,6 +12,7 @@ interface IAuthor extends ISimpleEntity {
 export interface IQuestion {
   _id: string;
   title: string;
+  content: string;
   tags: ISimpleEntity[];
   author: IAuthor;
   createdAt: Date;

@@ -13,6 +13,7 @@ import ROUTES from "@/constants/routes";
 import { toast } from "@/hooks/use-toast";
 import { createQuestion } from "@/lib/actions/question.action";
 import { AskQuestionSchema } from "@/lib/validations";
+import { IQuestion } from "@/types/global";
 
 import TagCard from "../cards/TagCard";
 import { Button } from "../ui/button";
@@ -31,7 +32,12 @@ const Editor = dynamic(() => import("@/components/editor"), {
   ssr: false,
 });
 
-const QuestionForm = () => {
+interface IQuestionFormProps {
+  question?: IQuestion;
+  isEdit?: boolean;
+}
+
+const QuestionForm = ({ question, isEdit = false }: IQuestionFormProps) => {
   const router = useRouter();
   const editorRef = useRef<MDXEditorMethods>(null);
   const [isPending, startTransition] = useTransition();
@@ -39,9 +45,9 @@ const QuestionForm = () => {
   const form = useForm<z.infer<typeof AskQuestionSchema>>({
     resolver: zodResolver(AskQuestionSchema),
     defaultValues: {
-      title: "",
-      content: "",
-      tags: [],
+      title: question?.title || "",
+      content: question?.content || "",
+      tags: question?.tags?.map((tag) => tag.name) || [],
     },
   });
 
