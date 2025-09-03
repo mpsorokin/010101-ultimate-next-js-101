@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { err } from "pino-std-serializers";
 
 import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filters/HomeFilter";
@@ -57,21 +58,28 @@ const Home = async ({ searchParams }: ISearchParams) => {
       </section>
 
       <HomeFilter />
-
-      <div className="mt-10 flex w-full flex-col gap-6">
-        {questions && questions.length > 0 ? (
-          questions.map((question) => (
-            <div key={question._id}>
-              <h2>{question.title}</h2>
-              <QuestionCard key={question._id} question={question} />
+      {success ? (
+        <div className="mt-10 flex w-full flex-col gap-6">
+          {questions && questions.length > 0 ? (
+            questions.map((question) => (
+              <div key={question._id}>
+                <h2>{question.title}</h2>
+                <QuestionCard key={question._id} question={question} />
+              </div>
+            ))
+          ) : (
+            <div className="mt-10 flex w-full items-center justify-center">
+              <p className="text-dark400_light700">No questions found</p>
             </div>
-          ))
-        ) : (
-          <div className="mt-10 flex w-full items-center justify-center">
-            <p className="text-dark400_light700">No questions found</p>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ) : (
+        <div className="mt-10 flex w-full items-center justify-center">
+          <p className="text-dark400_light700">
+            {error?.message || "Failed to fetch"}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
