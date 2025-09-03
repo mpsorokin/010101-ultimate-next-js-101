@@ -1,6 +1,6 @@
 "use server";
 
-import mongoose from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
 import Question from "@/database/question.model";
 import TagQuestion from "@/database/tag-question.model";
@@ -231,4 +231,40 @@ export async function getQuestions(
   const { page = 1, pageSize = 10, query, filter } = params;
   const skip = (Number(page) - 1) * Number(pageSize);
   const limit = Number(pageSize);
+
+  const filterQuery: FilterQuery<typeof Question> = {};
+
+  if (filter === "recommended") {
+    return {
+      success: true,
+      data: {
+        questions: [],
+        isNext: false,
+      },
+    };
+  }
+
+  if (query) {
+    filterQuery.$or = [
+      { title: { $regex: new RegExp(`^${query}$`, "i") } },
+      { content: { $regex: new RegExp(`^${query}$`, "i") } },
+    ];
+  }
+
+  let sortCriteria = {};
+
+  switch (filter) {
+    case "newest":
+      sortCriteria = { createdAt: -1 };
+      break;
+    case "unanswered":
+      filterQuery.answers = 0;
+      sortCriteria = { createdAt: -1 };
+      break;
+    case "popular":
+      sortCriteria = { upvotes: -1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
+  }
 }
