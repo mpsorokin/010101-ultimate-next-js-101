@@ -13,6 +13,8 @@ interface IQuestionCardProps {
 const QuestionCard = ({
   question: { _id, title, tags, author, createdAt, upvotes, answers, views },
 }: IQuestionCardProps) => {
+  console.log("author");
+  console.log(author);
   return (
     <div key={_id} className="card-wrapper rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -37,7 +39,7 @@ const QuestionCard = ({
 
       <div className="flex-between mt-6 w-full flex-wrap gap-3">
         <Metric
-          imgUrl={author.image !== "no image" ? author.image : ""}
+          imgUrl={author.image ? author.image : "/images/img_avatar.png"}
           alt={author.name}
           value={author.name}
           title={`asked  ${getTimeStamp(createdAt)}`}
