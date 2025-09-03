@@ -1,3 +1,5 @@
+import { FilterQuery } from "mongoose";
+
 import { ITag } from "@/database/tag.model";
 import action from "@/lib/handlers/action";
 import handleError from "@/lib/handlers/error";
@@ -18,5 +20,34 @@ export const getTags = async (
 
   if (validationResult instanceof Error) {
     return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { page = 1, pageSize = 10, query, filter } = params;
+  const skip = (Number(page) - 1) * Number(pageSize);
+  const limit = Number(pageSize);
+
+  const filterQuery: FilterQuery<ITag> = {};
+
+  if (query) {
+    filterQuery.$or = [{ title: { $regex: new RegExp(`^${query}$`, "i") } }];
+  }
+
+  const sortCriteria = {};
+
+  switch (filter) {
+    case "recent":
+      sortCriteria = { createdAt: -1 };
+      break;
+    case "oldest":
+      sortCriteria = { createdAt: 1 };
+      break;
+    case "popular":
+      sortCriteria = { questions: -1 };
+      break;
+    case "name":
+      sortCriteria = { name: 1 };
+      break;
+    default:
+      sortCriteria = { createdAt: -1 };
   }
 };
