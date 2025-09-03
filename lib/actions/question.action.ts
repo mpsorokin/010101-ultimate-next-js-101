@@ -227,4 +227,8 @@ export async function getQuestions(
   if (validationResult instanceof Error) {
     return handleError(validationResult) as ErrorResponse;
   }
+
+  const { page = 1, pageSize = 10, query, filter } = params;
+  const skip = (Number(page) - 1) * Number(pageSize);
+  const limit = Number(pageSize);
 }
