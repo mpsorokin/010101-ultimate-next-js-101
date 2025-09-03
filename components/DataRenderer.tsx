@@ -116,7 +116,7 @@ const DataRenderer = <T,>({
       />
     );
   }
-  return <div className="mt-4">{render(data)}</div>;
+  return <div>{render(data)}</div>;
 };
 
 export default DataRenderer;

@@ -65,14 +65,13 @@ const Home = async ({ searchParams }: ISearchParams) => {
         error={error}
         data={questions}
         empty={EMPTY_QUESTION}
-        render={(questions) =>
-          questions.map((question) => (
-            <div key={question._id}>
-              {/* <h2>{question.title}</h2> */}
+        render={(questions) => (
+          <div className="mt-10 flex w-full flex-col gap-6">
+            {questions.map((question) => (
               <QuestionCard key={question._id} question={question} />
-            </div>
-          ))
-        }
+            ))}
+          </div>
+        )}
       />
     </div>
   );
