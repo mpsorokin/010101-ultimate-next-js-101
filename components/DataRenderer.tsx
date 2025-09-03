@@ -41,7 +41,7 @@ const StateSkeleton = ({
   message,
   button,
 }: IStateSkeletonProps) => (
-  <div className="mt-16 flex w-full flex-col items-center justify-center">
+  <div className="mt-16 flex w-full flex-col items-center justify-center sm:mt-36">
     <>
       <Image
         src={image.dark}
@@ -50,7 +50,15 @@ const StateSkeleton = ({
         height={200}
         className="hidden object-contain dark:block"
       />
+      <Image
+        src={image.light}
+        alt={image.alt}
+        width={270}
+        height={200}
+        className="block object-contain dark:hidden"
+      />
     </>
+    <h2 className="mt-8 h2-bold text-dark200_light900">{title}</h2>
   </div>
 );
 
