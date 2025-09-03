@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { DEFAULT_EMPTY } from "@/constants/states";
+import { DEFAULT_EMPTY, DEFAULT_ERROR } from "@/constants/states";
 
 interface IDataRendererProps<T> {
   success: boolean;
@@ -83,6 +83,25 @@ const DataRenderer = <T,>({
   empty = DEFAULT_EMPTY,
   render,
 }: IDataRendererProps<T>) => {
+  if (!success) {
+    return (
+      <StateSkeleton
+        image={{
+          light: "/images/light-error.png",
+          dark: "/images/dark-error.png",
+          alt: "Error state",
+        }}
+        title={error?.message || DEFAULT_ERROR.title}
+        message={
+          error?.details
+            ? JSON.stringify(error.details, null, 2)
+            : DEFAULT_ERROR.message
+        }
+        button={empty?.button}
+      />
+    );
+  }
+
   if (!data || data.length === 0) {
     return (
       <StateSkeleton
