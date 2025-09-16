@@ -1,10 +1,11 @@
 import { getTags } from "@/lib/actions/tag.action";
+import { RouteParams } from "@/types/global";
 
-const TagsPage = async () => {
+const TagsPage = async ({ searchParams }: RouteParams) => {
   const { success, data, error } = await getTags({
     page: 1,
     pageSize: 10,
-    query: "",
+    query: "javascript",
   });
 
   const { tags } = data || {};
