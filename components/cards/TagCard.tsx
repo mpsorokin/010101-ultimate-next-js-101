@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import ROUTES from "@/constants/routes";
-import { getDeviconClassName } from "@/lib/utils";
+import { getDeviconClassName, getTechDescription } from "@/lib/utils";
 
 interface ITagCardProps {
   _id: string;
@@ -27,6 +27,7 @@ const TagCard = ({
   handleRemove,
 }: ITagCardProps) => {
   const iconClass = getDeviconClassName(name);
+  const iconDescription = getTechDescription(name);
 
   const Content = (
     <>
@@ -63,6 +64,14 @@ const TagCard = ({
       </Link>
     );
   }
+
+  return (
+    <Link href={ROUTES.TAG(_id)} className="shadow-light100_darknone">
+      <article className="background-light900_dark200 light-border flex w-full flex-col rounded-2xl border px-8 py-10 sm:w-[260px]">
+        <div></div>
+      </article>
+    </Link>
+  );
 };
 
 export default TagCard;
