@@ -19,7 +19,7 @@ const LocalSearch = ({
   route,
   imgSrc,
   placeholder,
-  iconPosition,
+  iconPosition = "left",
   otherClasses,
 }: ILocalSearchProps) => {
   const pathname = usePathname();

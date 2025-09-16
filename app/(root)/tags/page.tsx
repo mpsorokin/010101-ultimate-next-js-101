@@ -1,5 +1,8 @@
+import TagCard from "@/components/cards/TagCard";
+import DataRenderer from "@/components/DataRenderer";
 import LocalSearch from "@/components/search/LocalSearch";
 import ROUTES from "@/constants/routes";
+import { EMPTY_TAGS } from "@/constants/states";
 import { getTags } from "@/lib/actions/tag.action";
 import { RouteParams } from "@/types/global";
 
@@ -30,6 +33,20 @@ const TagsPage = async ({ searchParams }: RouteParams) => {
           otherClasses="flex-1"
         />
       </section>
+
+      <DataRenderer
+        success={success}
+        error={error}
+        data={tags}
+        empty={EMPTY_TAGS}
+        render={(tags) => (
+          <div className="mt-10 flex w-full flex-wrap gap-4">
+            {tags.map((tag) => (
+              <TagCard key={tag._id} {...tag} compact />
+            ))}
+          </div>
+        )}
+      />
     </>
   );
 };
