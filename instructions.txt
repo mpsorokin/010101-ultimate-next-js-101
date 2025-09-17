@@ -1,0 +1,2 @@
+if you want to output the content of all files run script
+node fileoutputter.js -folders "app components src utils" -output "project_content.txt"
