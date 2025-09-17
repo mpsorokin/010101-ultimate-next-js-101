@@ -1,6 +1,6 @@
 import { FilterQuery } from "mongoose";
 
-import { Tag } from "@/database";
+import { Question, Tag } from "@/database";
 import { ITag } from "@/database/tag.model";
 import action from "@/lib/handlers/action";
 import handleError from "@/lib/handlers/error";
@@ -82,7 +82,7 @@ export const getTags = async (
 export const getTagQuestions = async (
   params: GetTagQuestionsParams,
 ): Promise<
-  ActionResponse<{ tags: ITag; questions: IQuestion[]; isNext: boolean }>
+  ActionResponse<{ tag: ITag; questions: IQuestion[]; isNext: boolean }>
 > => {
   const validationResult = await action({
     params,
@@ -101,27 +101,37 @@ export const getTagQuestions = async (
     const tag = await Tag.findById(tagId);
 
     if (!tag) {
+      throw new Error("Tag not found");
     }
 
-    const filterQuery: FilterQuery<ITag> = {};
+    const filterQuery: FilterQuery<typeof Question> = {
+      tags: { $in: [tagId] },
+    };
 
     if (query) {
-      filterQuery.$or = [{ title: { $regex: new RegExp(`^${query}$`, "i") } }];
+      filterQuery.title = { $regex: new RegExp(`^${query}$`, "i") };
     }
 
-    const totalTags = await Tag.countDocuments(filterQuery);
+    const totalQuestions = await Question.countDocuments(filterQuery);
 
-    const tags = await Tag.find(filterQuery)
-      .sort(sortCriteria)
+    const questions = await Question.find(filterQuery)
+      .select("_id title views answers upvotes downvotes author createdAt")
+      .populate([
+        {
+          path: "author",
+          select: "name image",
+        },
+      ])
       .skip(skip)
       .limit(limit);
 
-    const isNext = totalTags > skip + tags.length;
+    const isNext = totalQuestions > skip + questions.length;
 
     return {
       success: true,
       data: {
-        tags: JSON.parse(JSON.stringify(tags)),
+        tag: JSON.parse(JSON.stringify(tag)),
+        questions: JSON.parse(JSON.stringify(questions)),
         isNext,
       },
     };
